@@ -1,0 +1,158 @@
+{
+  "metadata": {
+    "dataset_name": "AEGIS Synthetic SOC Alerts",
+    "version": "1.0",
+    "synthetic": true,
+    "description": "Synthetic security alerts for AEGIS SOC demonstration and controlled model evaluation."
+  },
+  "alerts": [
+    {
+      "alert_id": "ALT-2401",
+      "title": "Suspicious PowerShell Execution",
+      "severity": "Critical",
+      "source": "Microsoft Defender",
+      "asset_id": "FIN-WS-044",
+      "user_id": "USR-001",
+      "ip": "198.51.100.17",
+      "mitre_technique": "T1059.001",
+      "detection_confidence": 96,
+      "status": "Escalated",
+      "event_type": "process_creation",
+      "process": "powershell.exe",
+      "parent_process": "winword.exe",
+      "command_line": "powershell.exe -enc SYNTHETIC_BASE64_PAYLOAD",
+      "network_destination": "198.51.100.17:443",
+      "observations": [
+        "Encoded PowerShell invocation",
+        "Office application spawned PowerShell",
+        "Outbound connection immediately followed process execution"
+      ]
+    },
+    {
+      "alert_id": "ALT-2402",
+      "title": "Impossible Travel Authentication",
+      "severity": "High",
+      "source": "Microsoft Entra ID",
+      "asset_id": "IAM-CLOUD",
+      "user_id": "USR-002",
+      "ip": "203.0.113.22",
+      "mitre_technique": "T1078",
+      "detection_confidence": 89,
+      "status": "Investigating",
+      "event_type": "authentication",
+      "observations": [
+        "Two successful logins from geographically inconsistent locations",
+        "Authentication events occurred within 11 minutes",
+        "Second authentication used a previously unseen IP"
+      ]
+    },
+    {
+      "alert_id": "ALT-2403",
+      "title": "Malware Beaconing Pattern",
+      "severity": "Critical",
+      "source": "EDR",
+      "asset_id": "HR-LT-117",
+      "user_id": "USR-003",
+      "ip": "192.0.2.18",
+      "mitre_technique": "T1071.001",
+      "detection_confidence": 94,
+      "status": "Awaiting HITL",
+      "event_type": "network_connection",
+      "observations": [
+        "Periodic outbound HTTPS connections",
+        "Consistent beacon interval",
+        "Destination matches synthetic malicious IOC"
+      ]
+    },
+    {
+      "alert_id": "ALT-2404",
+      "title": "Multiple Failed VPN Logins",
+      "severity": "Medium",
+      "source": "VPN Gateway",
+      "asset_id": "VPN-EDGE-02",
+      "user_id": "USR-004",
+      "ip": "203.0.113.44",
+      "mitre_technique": "T1110",
+      "detection_confidence": 78,
+      "status": "Auto Resolved",
+      "event_type": "authentication_failure",
+      "observations": [
+        "Eight failed VPN logins",
+        "Subsequent successful login from known corporate device",
+        "MFA challenge completed successfully"
+      ]
+    },
+    {
+      "alert_id": "ALT-2405",
+      "title": "Privilege Escalation Attempt",
+      "severity": "High",
+      "source": "SIEM",
+      "asset_id": "APP-SRV-12",
+      "user_id": "USR-005",
+      "ip": "10.20.5.18",
+      "mitre_technique": "T1068",
+      "detection_confidence": 91,
+      "status": "Investigating",
+      "event_type": "privilege_change",
+      "observations": [
+        "Service identity attempted privileged token creation",
+        "Activity occurred outside maintenance window",
+        "Target server hosts finance application"
+      ]
+    },
+    {
+      "alert_id": "ALT-2406",
+      "title": "Suspicious DNS Query Burst",
+      "severity": "Medium",
+      "source": "DNS Security",
+      "asset_id": "ENG-LT-095",
+      "user_id": "USR-006",
+      "ip": "10.18.44.31",
+      "mitre_technique": "T1071.004",
+      "detection_confidence": 74,
+      "status": "Triaged",
+      "event_type": "dns_activity",
+      "observations": [
+        "Large burst of DNS TXT queries",
+        "Queries targeted newly observed synthetic domain",
+        "No confirmed payload transfer"
+      ]
+    },
+    {
+      "alert_id": "ALT-2407",
+      "title": "Unsigned Binary Execution",
+      "severity": "Low",
+      "source": "EDR",
+      "asset_id": "OPS-WS-221",
+      "user_id": "USR-007",
+      "ip": "10.17.8.67",
+      "mitre_technique": "T1204",
+      "detection_confidence": 61,
+      "status": "Closed",
+      "event_type": "process_creation",
+      "observations": [
+        "Unsigned internal utility executed",
+        "Binary hash matches approved software inventory",
+        "No suspicious child process or network activity"
+      ]
+    },
+    {
+      "alert_id": "ALT-2408",
+      "title": "Cloud Storage Exfiltration Pattern",
+      "severity": "Critical",
+      "source": "CASB",
+      "asset_id": "CLOUD-STORAGE",
+      "user_id": "USR-008",
+      "ip": "198.51.100.87",
+      "mitre_technique": "T1567",
+      "detection_confidence": 98,
+      "status": "Escalated",
+      "event_type": "data_transfer",
+      "observations": [
+        "Large outbound transfer to unmanaged destination",
+        "Volume significantly exceeds user baseline",
+        "Files contain synthetic confidential labels"
+      ]
+    }
+  ]
+}

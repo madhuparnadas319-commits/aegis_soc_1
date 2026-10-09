@@ -1,0 +1,181 @@
+"""Optional live AEGIS SOC Streamlit page.
+
+Place in app/pages/ and start the existing app/app.py normally. Streamlit
+recognizes page files in this folder automatically. This does not replace
+or modify the original cinematic dashboard.
+"""
+
+from __future__ import annotations
+
+import sys
+from pathlib import Path
+
+# Ensure `from app.api_client` resolves when Streamlit launches app/app.py.
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+
+import pandas as pd
+import requests
+import streamlit as st
+
+from app.api_client import AegisAPIClient, AegisAPIError
+
+
+st.set_page_config(page_title="AEGIS | Live Operations", page_icon="🛡️", layout="wide")
+st.title("🛡️ AEGIS SOC | Live Operations")
+st.caption("Real local investigation records and persisted analyst actions. Local prototype only.")
+
+client = AegisAPIClient()
+
+
+def get_dashboard(path: str, *, params: dict | None = None) -> dict:
+    return client._request(
+        "GET", f"{client.base_url}/dashboard/{path.lstrip('/')}",
+        params=params, timeout=(5, 20)
+    )
+
+
+def post_dashboard(path: str, payload: dict) -> dict:
+    return client._request(
+        "POST", f"{client.base_url}/dashboard/{path.lstrip('/')}",
+        json=payload, timeout=(5, 20)
+    )
+
+
+def table(rows: list[dict], empty: str) -> None:
+    if rows:
+        st.dataframe(pd.DataFrame(rows), use_container_width=True, hide_index=True)
+    else:
+        st.info(empty)
+
+
+try:
+    health = client.health()
+    overview = get_dashboard("overview")
+except (AegisAPIError, requests.RequestException) as exc:
+    st.error(f"Backend unavailable: {exc}")
+    st.info("This page requires the additive api.dashboard_api:app entrypoint. "
+            "Your original api.aegis_api:app still provides /health and /investigate.")
+    st.stop()
+
+counts = overview.get("database", {})
+a, b, c, d = st.columns(4)
+a.metric("Cases", counts.get("cases", "–"))
+b.metric("Investigations", counts.get("investigations", "–"))
+c.metric("Pending human reviews", overview.get("pending_reviews", "–"))
+d.metric("Escalated case records", overview.get("escalations", "–"))
+
+st.divider()
+st.subheader("Start a real investigation")
+with st.form("run_investigation"):
+    alert_id = st.text_input("Alert ID", value="ALT-2404").strip()
+    method = st.radio(
+        "Path", ["Direct FastAPI", "Governed n8n workflow"], horizontal=True,
+        help="n8n requires its production webhook to be published and configured."
+    )
+    run = st.form_submit_button("Investigate", type="primary")
+
+if run:
+    try:
+        with st.spinner("Running AEGIS multi-agent investigation..."):
+            result = client.investigate(alert_id, via_n8n=method.startswith("Governed"))
+        st.success("Investigation completed. Review governance decision below.")
+        st.json(result)
+    except AegisAPIError as exc:
+        st.error(str(exc))
+
+st.divider()
+tab_cases, tab_investigations, tab_review, tab_escalation, tab_audit = st.tabs(
+    ["Cases", "Investigations", "Human Review", "Escalations", "Audit Trail"]
+)
+
+with tab_cases:
+    st.subheader("Cases in SQLite")
+    if st.button("Refresh cases"):
+        st.rerun()
+    try:
+        table(get_dashboard("cases", params={"limit": 100}).get("items", []), "No cases found")
+    except AegisAPIError as exc:
+        st.error(str(exc))
+
+with tab_investigations:
+    st.subheader("Stored investigations")
+    try:
+        table(
+            get_dashboard("investigations", params={"limit": 100}).get("items", []),
+            "No investigations have been recorded yet.",
+        )
+    except AegisAPIError as exc:
+        st.error(str(exc))
+
+with tab_review:
+    st.subheader("[H] HITL cases awaiting a final analyst decision")
+    try:
+        pending = get_dashboard("queues/human-review").get("items", [])
+        table(pending, "No cases currently require human approval.")
+    except AegisAPIError as exc:
+        pending = []
+        st.error(str(exc))
+
+    if pending:
+        options = {f"{row['alert_id']} | {row['investigation_id']}": row for row in pending}
+        selected = options[st.selectbox("Investigation to review", list(options))]
+        with st.form("submit_review"):
+            analyst = st.text_input("Analyst ID", value="demo-analyst")
+            decision = st.selectbox("Decision", ["approve", "reject", "request_more_evidence"])
+            rationale = st.text_area("Analyst rationale")
+            submit = st.form_submit_button("Record human decision")
+        if submit:
+            try:
+                saved = post_dashboard("reviews", {
+                    "case_id": selected["case_id"],
+                    "investigation_id": selected["investigation_id"],
+                    "analyst_id": analyst,
+                    "decision": decision,
+                    "rationale": rationale,
+                })
+                st.success(f"Decision saved: {saved['action_id']}")
+                st.rerun()
+            except AegisAPIError as exc:
+                st.error(str(exc))
+    st.caption("An analyst decision is recorded locally. No external banking actions occur.")
+
+with tab_escalation:
+    st.subheader("[E] Escalated investigations")
+    try:
+        escalations = get_dashboard("queues/escalations").get("items", [])
+        table(escalations, "No escalations currently recorded.")
+    except AegisAPIError as exc:
+        escalations = []
+        st.error(str(exc))
+    if escalations:
+        options = {f"{row['alert_id']} | {row['investigation_id']}": row for row in escalations}
+        selected = options[st.selectbox("Escalation to update", list(options))]
+        with st.form("submit_escalation"):
+            analyst = st.text_input("Analyst ID", value="demo-analyst", key="esc_analyst")
+            action = st.selectbox("Action", ["acknowledge", "assign", "resolve"])
+            assignee = st.text_input("Assignee (needed for assign)")
+            rationale = st.text_area("Action rationale", key="esc_rationale")
+            submit = st.form_submit_button("Record escalation action")
+        if submit:
+            try:
+                saved = post_dashboard("escalation-actions", {
+                    "case_id": selected["case_id"],
+                    "investigation_id": selected["investigation_id"],
+                    "analyst_id": analyst,
+                    "action": action,
+                    "assignee": assignee or None,
+                    "rationale": rationale,
+                })
+                st.success(f"Escalation action recorded: {saved['action_id']}")
+                st.rerun()
+            except AegisAPIError as exc:
+                st.error(str(exc))
+    st.caption("No live SOC tooling or external response actions are triggered.")
+
+with tab_audit:
+    st.subheader("Runtime and analyst activity")
+    try:
+        table(get_dashboard("audit", params={"limit": 100}).get("items", []),
+              "No events found")
+    except AegisAPIError as exc:
+        st.error(str(exc))

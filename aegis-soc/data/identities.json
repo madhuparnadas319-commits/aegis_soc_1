@@ -1,0 +1,88 @@
+{
+  "metadata": {
+    "synthetic": true,
+    "dataset_name": "AEGIS Identity Context"
+  },
+  "identities": [
+    {
+      "user_id": "USR-001",
+      "username": "r.mehta",
+      "department": "Finance",
+      "role": "Finance Analyst",
+      "privilege_level": "Standard",
+      "mfa_enabled": true,
+      "account_status": "Active",
+      "risk_level": "Medium"
+    },
+    {
+      "user_id": "USR-002",
+      "username": "a.sharma",
+      "department": "Sales",
+      "role": "Regional Manager",
+      "privilege_level": "Standard",
+      "mfa_enabled": true,
+      "account_status": "Active",
+      "risk_level": "Medium"
+    },
+    {
+      "user_id": "USR-003",
+      "username": "s.kapoor",
+      "department": "Human Resources",
+      "role": "HR Business Partner",
+      "privilege_level": "Standard",
+      "mfa_enabled": true,
+      "account_status": "Active",
+      "risk_level": "High"
+    },
+    {
+      "user_id": "USR-004",
+      "username": "p.nair",
+      "department": "Operations",
+      "role": "Operations Analyst",
+      "privilege_level": "Standard",
+      "mfa_enabled": true,
+      "account_status": "Active",
+      "risk_level": "Low"
+    },
+    {
+      "user_id": "USR-005",
+      "username": "svc_finance",
+      "department": "Finance Applications",
+      "role": "Service Account",
+      "privilege_level": "Privileged",
+      "mfa_enabled": false,
+      "account_status": "Active",
+      "risk_level": "High"
+    },
+    {
+      "user_id": "USR-006",
+      "username": "m.rao",
+      "department": "Engineering",
+      "role": "Developer",
+      "privilege_level": "Standard",
+      "mfa_enabled": true,
+      "account_status": "Active",
+      "risk_level": "Medium"
+    },
+    {
+      "user_id": "USR-007",
+      "username": "v.singh",
+      "department": "Operations",
+      "role": "Operations Engineer",
+      "privilege_level": "Standard",
+      "mfa_enabled": true,
+      "account_status": "Active",
+      "risk_level": "Low"
+    },
+    {
+      "user_id": "USR-008",
+      "username": "n.verma",
+      "department": "Data Analytics",
+      "role": "Data Analyst",
+      "privilege_level": "Standard",
+      "mfa_enabled": true,
+      "account_status": "Active",
+      "risk_level": "High"
+    }
+  ]
+}

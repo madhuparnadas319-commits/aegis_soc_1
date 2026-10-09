@@ -1,0 +1,8 @@
+{
+  "notes": "Reference outcomes from previously demonstrated AEGIS synthetic cases. These are not empirical performance results, and policy outcomes should not be treated as LLM classification ground truth.",
+  "cases": {
+    "ALT-2401": {"expected_classification": "True Positive", "expected_route": "[H] HITL"},
+    "ALT-2404": {"expected_classification": "Likely False Positive", "expected_route": "[A] Autonomous"},
+    "ALT-2408": {"expected_classification": "True Positive", "expected_route": "[E] Escalation"}
+  }
+}

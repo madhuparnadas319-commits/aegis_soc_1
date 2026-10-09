@@ -1,0 +1,96 @@
+{
+  "metadata": {
+    "synthetic": true,
+    "dataset_name": "AEGIS Asset Context"
+  },
+  "assets": [
+    {
+      "asset_id": "FIN-WS-044",
+      "hostname": "FIN-WS-044",
+      "business_unit": "Finance",
+      "criticality": "High",
+      "data_classification": "Confidential",
+      "internet_exposed": false,
+      "edr_enabled": true,
+      "privileged_access": true,
+      "risk_weight": 0.90
+    },
+    {
+      "asset_id": "IAM-CLOUD",
+      "hostname": "IAM-CLOUD",
+      "business_unit": "Enterprise Identity",
+      "criticality": "Critical",
+      "data_classification": "Restricted",
+      "internet_exposed": true,
+      "edr_enabled": false,
+      "privileged_access": true,
+      "risk_weight": 1.00
+    },
+    {
+      "asset_id": "HR-LT-117",
+      "hostname": "HR-LT-117",
+      "business_unit": "Human Resources",
+      "criticality": "High",
+      "data_classification": "Confidential",
+      "internet_exposed": false,
+      "edr_enabled": true,
+      "privileged_access": false,
+      "risk_weight": 0.85
+    },
+    {
+      "asset_id": "VPN-EDGE-02",
+      "hostname": "VPN-EDGE-02",
+      "business_unit": "Infrastructure",
+      "criticality": "Critical",
+      "data_classification": "Internal",
+      "internet_exposed": true,
+      "edr_enabled": false,
+      "privileged_access": true,
+      "risk_weight": 0.95
+    },
+    {
+      "asset_id": "APP-SRV-12",
+      "hostname": "APP-SRV-12",
+      "business_unit": "Finance Applications",
+      "criticality": "Critical",
+      "data_classification": "Restricted",
+      "internet_exposed": false,
+      "edr_enabled": true,
+      "privileged_access": true,
+      "risk_weight": 1.00
+    },
+    {
+      "asset_id": "ENG-LT-095",
+      "hostname": "ENG-LT-095",
+      "business_unit": "Engineering",
+      "criticality": "Medium",
+      "data_classification": "Internal",
+      "internet_exposed": false,
+      "edr_enabled": true,
+      "privileged_access": false,
+      "risk_weight": 0.55
+    },
+    {
+      "asset_id": "OPS-WS-221",
+      "hostname": "OPS-WS-221",
+      "business_unit": "Operations",
+      "criticality": "Low",
+      "data_classification": "Internal",
+      "internet_exposed": false,
+      "edr_enabled": true,
+      "privileged_access": false,
+      "risk_weight": 0.30
+    },
+    {
+      "asset_id": "CLOUD-STORAGE",
+      "hostname": "CLOUD-STORAGE",
+      "business_unit": "Enterprise Cloud",
+      "criticality": "Critical",
+      "data_classification": "Restricted",
+      "internet_exposed": true,
+      "edr_enabled": false,
+      "privileged_access": true,
+      "risk_weight": 1.00
+    }
+  ]
+}

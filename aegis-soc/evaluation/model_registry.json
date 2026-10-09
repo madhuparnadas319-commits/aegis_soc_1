@@ -1,0 +1,8 @@
+{
+  "description": "Three candidate open-weight LLMs for comparative SOC triage evaluation. Only models installed in Ollama can run.",
+  "models": [
+    {"id": "qwen3:8b", "family": "Qwen", "installed_by_default": true},
+    {"id": "llama3.1:8b", "family": "Llama", "installed_by_default": false},
+    {"id": "gemma3:4b", "family": "Gemma", "installed_by_default": false}
+  ]
+}

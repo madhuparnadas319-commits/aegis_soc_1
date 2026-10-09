@@ -1,0 +1,56 @@
+{
+  "metadata": {
+    "synthetic": true,
+    "dataset_name": "AEGIS Synthetic Threat Intelligence"
+  },
+  "indicators": [
+    {
+      "indicator": "198.51.100.17",
+      "type": "IPv4",
+      "reputation": "Malicious",
+      "confidence": 92,
+      "threat_category": "Command and Control",
+      "source": "AEGIS Synthetic TI Feed"
+    },
+    {
+      "indicator": "203.0.113.22",
+      "type": "IPv4",
+      "reputation": "Suspicious",
+      "confidence": 78,
+      "threat_category": "Credential Abuse",
+      "source": "AEGIS Synthetic TI Feed"
+    },
+    {
+      "indicator": "192.0.2.18",
+      "type": "IPv4",
+      "reputation": "Malicious",
+      "confidence": 96,
+      "threat_category": "Malware Beaconing",
+      "source": "AEGIS Synthetic TI Feed"
+    },
+    {
+      "indicator": "203.0.113.44",
+      "type": "IPv4",
+      "reputation": "Unknown",
+      "confidence": 42,
+      "threat_category": "Unclassified",
+      "source": "AEGIS Synthetic TI Feed"
+    },
+    {
+      "indicator": "198.51.100.87",
+      "type": "IPv4",
+      "reputation": "Malicious",
+      "confidence": 95,
+      "threat_category": "Data Exfiltration",
+      "source": "AEGIS Synthetic TI Feed"
+    },
+    {
+      "indicator": "telemetry-sync.example",
+      "type": "Domain",
+      "reputation": "Suspicious",
+      "confidence": 83,
+      "threat_category": "DNS Tunnelling",
+      "source": "AEGIS Synthetic TI Feed"
+    }
+  ]
+}
